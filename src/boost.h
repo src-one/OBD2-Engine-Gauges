@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
 
-#define HISTORY_LENGTH 128
+#define HISTORY_LENGTH 120
 #define PERIOD 50
 
 class Boost
@@ -12,11 +12,15 @@ class Boost
 public:
     void setRange(int min, int max);
     void setValue(int value);
+    void setVisibleValue(int value);
+    void setActualValue(int value);
     void addHistory(int value);
     void render(U8G2 u8g2);
 
 private:
     int currentValue;
+    int currentVisibleValue;
+    int actualValue;
     int maxValue = 0;
     int minValue = 0;
 

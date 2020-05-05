@@ -1,0 +1,42 @@
+
+Codes and calculations:
+
+EGT at catalyst inlet
+- PID 22003c, unit °C, Max 800, Min 0, equation ((A*256)+B)/10-40
+- ?This is the one I look at for avoiding engine damage. 200-400 is normal. 600 is normal in the first minute or so of a regen cycle. 800 is definitely bad and you should park for a bit.
+
+EGT at DPF inlet
+- PID 22003c, unit °C, Max 800, Min 0, equation ((A*256)+B)/10-40
+- ?Not really that useful, I think the ECU uses this to estimate DPF temperature? No idea. But after your first regen for an engine cycle this will go high and stay high. I'm not sure if this is actually at the inlet or the outlet.
+
+DPF Regen cycle on
+- PID 22125b
+- ?If you set this up as an on/off it tell you when the DPF is regenerating. Important to know because at the start of the regen cycle the EGT @ the cat will go high and you shouldn't be concerned if this light is also on.
+
+DPF temperature (estimated)
+- PID 22114c, unit °C, Max 800, Min 0, equation A*5-40
+- ?Not that useful but fun to know!
+
+Soot accumulation ratio
+- PID 22114d, unit %, Max 100, Min 0, equation A
+- ?How much soot is currently in the DPF awaiting regen, seems to trigger ~ 65%
+
+Cumulative ash ratio
+- PID 221149, unit %, Max 100, Min 0, equation A
+- ?I think this is calculated from the exhaust pressure before and after DPF, you can think of this like the lifespan of your DPF unit. Mine is worked hard and is at 72% at 165k KMs. The more ash, the less available soot capacity, the more frequent the regens, the worse the economy and power.
+
+Distance since last regen
+- PID 221156, unit km, equation A*256+B
+- ?Mine seems to be every 25-30km, yours will depend on your cumulative ash ratio, the climate you live in, and the engine oil you use.
+
+Distance to oil change
+- PID 221155, unit km, Max 2000, Min 0, equation A*100
+- ?This is calculated from oil dilution which itself is estimated. I use this to remind me to do the park light/defogger dance (see your manual) when I change the oil.
+
+DPF Regen Count
+- PID 221157, equation A*256+B
+- ?How many times your DPF has done a full regen
+
+DPF Regen Attempt Count
+- PID 2211a1, equation A*256+B
+- ?How many times your DPF has done at least 50% of a regen (including full regens)

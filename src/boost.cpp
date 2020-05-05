@@ -1,4 +1,3 @@
-
 #include "boost.h"
 
 void Boost::setRange(int min, int max)
@@ -19,6 +18,16 @@ void Boost::setValue(int value)
     }
 }
 
+void Boost::setVisibleValue(int value)
+{
+    currentVisibleValue = value;
+}
+
+void Boost::setActualValue(int value)
+{
+    actualValue = value;
+}
+
 void Boost::render(U8G2 u8g2)
 {
     // Draw current value
@@ -26,17 +35,18 @@ void Boost::render(U8G2 u8g2)
     char cstr[6];
 
     //dtostrf((float)currentValue, 1, 2, cstr);
-    sprintf(cstr, "%d%", currentValue);
+    sprintf(cstr, "%d%", currentVisibleValue);
     u8g2.drawStr(0, 0, cstr);
 
     // Draw max value
     u8g2.setFont(u8g2_font_fub11_tf);
 
     //dtostrf((float)maxValue, 1, 0, cstr);
-    sprintf(cstr, "%d%", maxValue);
+    //sprintf(cstr, "%d%", maxValue);
+    sprintf(cstr, "%d%", actualValue);
 
     int yPos = u8g2.getStrWidth(cstr);
-    u8g2.drawStr(HISTORY_LENGTH - yPos, 11, cstr);
+    u8g2.drawStr(HISTORY_LENGTH - yPos, 8, cstr);
 
     drawBarGraph(u8g2, 0, 22, HISTORY_LENGTH, 8);
     drawGraph(u8g2, 0, 32, HISTORY_LENGTH, 31);
@@ -53,7 +63,7 @@ void Boost::addHistory(int value)
     {
         minValue = value;
     }
-    
+
     history[historyPos] = value;
     historyPos--;
 
@@ -103,6 +113,7 @@ void Boost::drawGraph(U8G2 u8g2, int x, int y, int len, int height)
         {
             // Point is above zero line, fill in space under graph
             u8g2.drawVLine(xPos, yPos, zeroYPos + 1 - yPos);
+            //u8g2.drawPixel(xPos, yPos);
         }
         else
         {

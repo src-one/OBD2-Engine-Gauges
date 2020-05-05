@@ -122,6 +122,7 @@ byte Elm327::connect()
     isBluetoothConnection = true;
 
     client.begin("ESP32", true);
+    client.unpairDevice(address);
     client.setPin(pin);
 
     if (!client.connect(address))
@@ -766,6 +767,7 @@ byte Elm327::commandEquivalenceRatio(float &ratio)
         return status;
     }
     ratio = ((values[0] * 256) + values[1]) / 32768;
+    //ratio = (((values[0] * 256) + values[1]) / 32768) * 14.7f; //((A * 256) + B) / 32768
     return ELM_SUCCESS;
 }
 
